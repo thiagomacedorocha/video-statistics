@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<springProfile name="default">
+		<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	</springProfile>
+
+	<springProfile name="development">
+		<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	
+		<appender name="gelf" class="de.appelgriepsch.logback.GelfAppender">
+	        <server>development-log.tmr.io</server>
+	        <port>12201</port>
+	        <protocol>UDP</protocol>
+	        <includeSource>true</includeSource>
+	        <includeMDC>true</includeMDC>
+	        <queueSize>512</queueSize>
+	        <connectTimeout>1000</connectTimeout>
+	        <reconnectDelay>500</reconnectDelay>
+	        <additionalFields>application=video-statistics</additionalFields>
+	        <layout class="ch.qos.logback.classic.PatternLayout">
+	            <pattern>%.-25m</pattern>
+	        </layout>
+	    </appender>
+	
+	    <root level="INFO" additivity="false">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="gelf" />
+		</root>
+	</springProfile>
+
+	<springProfile name="staging">
+		<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	
+		<appender name="gelf" class="de.appelgriepsch.logback.GelfAppender">
+	        <server>log.tmr.io</server>
+	        <port>12201</port>
+	        <protocol>UDP</protocol>
+	        <includeSource>true</includeSource>
+	        <includeMDC>true</includeMDC>
+	        <queueSize>512</queueSize>
+	        <connectTimeout>1000</connectTimeout>
+	        <reconnectDelay>500</reconnectDelay>
+	        <additionalFields>application=video-statistics</additionalFields>
+	        <layout class="ch.qos.logback.classic.PatternLayout">
+	            <pattern>%.-25m</pattern>
+	        </layout>
+	    </appender>
+	    
+	    <root level="INFO" additivity="false">
+	    	<appender-ref ref="CONSOLE" />
+			<appender-ref ref="gelf" />
+		</root>
+	</springProfile>
+	
+	<springProfile name="production">
+		<include resource="org/springframework/boot/logging/logback/base.xml"/>
+	
+		<appender name="gelf" class="de.appelgriepsch.logback.GelfAppender">
+	        <server>log.tmr.io</server>
+	        <port>12201</port>
+	        <protocol>UDP</protocol>
+	        <includeSource>true</includeSource>
+	        <includeMDC>true</includeMDC>
+	        <queueSize>512</queueSize>
+	        <connectTimeout>1000</connectTimeout>
+	        <reconnectDelay>500</reconnectDelay>
+	        <additionalFields>application=video-statistics</additionalFields>
+	        <layout class="ch.qos.logback.classic.PatternLayout">
+	            <pattern>%.-25m</pattern>
+	        </layout>
+	    </appender>
+	    
+	    <root level="INFO" additivity="false">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="gelf" />
+		</root>
+	</springProfile>
+</configuration>

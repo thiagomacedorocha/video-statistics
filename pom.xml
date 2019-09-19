@@ -16,12 +16,25 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<logback.gelf.appender.version>1.5</logback.gelf.appender.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.appelgriepsch.logback</groupId>
+			<artifactId>logback-gelf-appender</artifactId>
+			<version>${logback.gelf.appender.version}</version>
 		</dependency>
 
 		<dependency>
