@@ -10,7 +10,7 @@ public class DateUtilsTest {
 
 	@Test
 	public void test_convertTimestampToLocalDateTime() {
-		long timestamp = 1478192204L;
+		long timestamp = 1478192204000L;
 		LocalDateTime dateTime = DateUtils.convertTimestampToLocalDateTimeUTC(timestamp);
 
 		assertThat(dateTime).isNotNull();

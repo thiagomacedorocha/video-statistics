@@ -6,8 +6,8 @@ import java.time.ZoneOffset;
 
 public class DateUtils {
 
-	public static LocalDateTime convertTimestampToLocalDateTimeUTC(long timestamp) {
-		return LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneOffset.UTC);
+	public static LocalDateTime convertTimestampToLocalDateTimeUTC(long timestampMilliseconds) {
+		return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestampMilliseconds), ZoneOffset.UTC);
 	}
 
 }
