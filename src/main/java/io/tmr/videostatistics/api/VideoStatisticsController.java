@@ -19,10 +19,8 @@ import io.tmr.videostatistics.dto.ErrorMessageDTO;
 import io.tmr.videostatistics.dto.InsertVideoRequest;
 import io.tmr.videostatistics.dto.StatisticsResponse;
 import io.tmr.videostatistics.service.VideosService;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController()
-@Slf4j
 public class VideoStatisticsController {
 
 	private static final String VIDEOS = "videos";
@@ -53,14 +51,12 @@ public class VideoStatisticsController {
 		return videosService.statistics();
 	}
 
-	@ExceptionHandler(value = {
-		InvalidInputData.class
-	})
+	@ExceptionHandler(InvalidInputData.class)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ErrorMessageDTO invalidInputData(Exception ex, WebRequest req) {
 		// @formatter:off
 		return ErrorMessageDTO.builder()
-				.message(ex.getMessage())
+				.message("teste")
 				.timestamp(LocalDateTime.now())
 				.build();
 		// @formatter:on

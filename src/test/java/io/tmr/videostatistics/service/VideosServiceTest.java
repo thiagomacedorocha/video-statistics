@@ -2,6 +2,7 @@ package io.tmr.videostatistics.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class VideosServiceTest {
 	@Test
 	public void test_insertVideo_timestamp_lessThan60s() {
 		InsertVideoRequest insertVideo = new InsertVideoRequest();
-		insertVideo.setDuration(200.3);
+		insertVideo.setDuration(BigDecimal.valueOf(200.3));
 		LocalDateTime testDate = DateUtils.now().minusSeconds(60);
 		insertVideo.setTimestamp(DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate));
 
@@ -36,7 +37,7 @@ public class VideosServiceTest {
 	@Test
 	public void test_insertVideo_timestamp_moreThan60s() {
 		InsertVideoRequest insertVideo = new InsertVideoRequest();
-		insertVideo.setDuration(200.3);
+		insertVideo.setDuration(BigDecimal.valueOf(200.3));
 		LocalDateTime testDate = DateUtils.now().minusSeconds(61);
 		insertVideo.setTimestamp(DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate));
 
