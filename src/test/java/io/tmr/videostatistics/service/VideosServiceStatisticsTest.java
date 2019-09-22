@@ -31,7 +31,7 @@ public class VideosServiceStatisticsTest {
 	 * statistics properties. Post that describe the problem:
 	 * https://stackoverflow.com/questions/10786587/java-double-precision-sum-trouble
 	 */
-	// @Test
+	@Test
 	public void test_statistics_detect_precision_error() {
 		loadVideos();
 		StatisticsResponse statistics = videosService.statistics();
