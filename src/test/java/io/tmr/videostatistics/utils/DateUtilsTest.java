@@ -11,7 +11,7 @@ public class DateUtilsTest {
 	@Test
 	public void test_convertTimestampToLocalDateTime() {
 		long timestamp = 1478192204000L;
-		LocalDateTime dateTime = DateUtils.convertTimestampToLocalDateTimeUTC(timestamp);
+		LocalDateTime dateTime = DateUtils.timestampToLocalDateTimeUTC(timestamp);
 
 		assertThat(dateTime).isNotNull();
 		assertThat(dateTime.getDayOfMonth()).isEqualTo(3);

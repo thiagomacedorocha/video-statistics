@@ -19,7 +19,7 @@ public class VideosServiceImpl implements VideosService {
 	@Override
 	public void insertVideo(InsertVideoRequest insertVideo) {
 		log.info("insertVideo");
-		LocalDateTime date = DateUtils.convertTimestampToLocalDateTimeUTC(insertVideo.getTimestamp());
+		LocalDateTime date = DateUtils.timestampToLocalDateTimeUTC(insertVideo.getTimestamp());
 		validateDateMoreThen60Seconds(date);
 	}
 
