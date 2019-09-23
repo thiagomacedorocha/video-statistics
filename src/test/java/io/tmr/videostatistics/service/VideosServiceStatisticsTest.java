@@ -77,7 +77,7 @@ public class VideosServiceStatisticsTest {
 
 	@Test
 	public void test_statistics_manyRandomVideos() {
-		StatisticsResponse generatedStatistics = loadManyRandomVideos_erro();
+		StatisticsResponse generatedStatistics = loadManyRandomVideos();
 
 		StatisticsResponse statistics = videosService.statistics();
 
@@ -91,7 +91,7 @@ public class VideosServiceStatisticsTest {
 		videosService.deleteAllVideos();
 	}
 
-	private StatisticsResponse loadManyRandomVideos_erro() {
+	private StatisticsResponse loadManyRandomVideos() {
 
 		LocalDateTime testDate = DateUtils.now();
 
