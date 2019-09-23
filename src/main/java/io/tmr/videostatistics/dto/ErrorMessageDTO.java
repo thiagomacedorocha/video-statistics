@@ -13,7 +13,7 @@ import lombok.Getter;
 @JsonInclude(Include.NON_NULL)
 public class ErrorMessageDTO {
 
-	private LocalDateTime timestamp;
+	private LocalDateTime serverTime;
 	private String message;
 	private String debugMessage;
 

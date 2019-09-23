@@ -1,7 +1,5 @@
 package io.tmr.videostatistics.api;
 
-import java.time.LocalDateTime;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -19,6 +17,7 @@ import io.tmr.videostatistics.dto.ErrorMessageDTO;
 import io.tmr.videostatistics.dto.InsertVideoRequest;
 import io.tmr.videostatistics.dto.StatisticsResponse;
 import io.tmr.videostatistics.service.VideosService;
+import io.tmr.videostatistics.utils.DateUtils;
 
 @RestController()
 public class VideoStatisticsController {
@@ -56,8 +55,8 @@ public class VideoStatisticsController {
 	public ErrorMessageDTO invalidInputData(Exception ex, WebRequest req) {
 		// @formatter:off
 		return ErrorMessageDTO.builder()
-				.message("teste")
-				.timestamp(LocalDateTime.now())
+				.message(ex.getMessage())
+				.serverTime(DateUtils.now())
 				.build();
 		// @formatter:on
 	}
@@ -69,7 +68,7 @@ public class VideoStatisticsController {
 		// @formatter:off
 		return ErrorMessageDTO.builder()
 				.message(ex.getMessage())
-				.timestamp(LocalDateTime.now())
+				.serverTime(DateUtils.now())
 				.debugMessage(debugMsg)
 				.build();
 		// @formatter:on
