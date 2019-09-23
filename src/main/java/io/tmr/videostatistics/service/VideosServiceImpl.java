@@ -30,10 +30,14 @@ public class VideosServiceImpl implements VideosService {
 
 	@Override
 	public void insertVideo(Video video) {
-		// log.debug("insertVideo: " + insertVideo);
-		LocalDateTime date = DateUtils.timestampToLocalDateTimeUTC(video.getTimestamp());
-		validateDateMoreThen60Seconds(date);
-		statisticsRepository.save(video);
+		try {
+			LocalDateTime date = DateUtils.timestampToLocalDateTimeUTC(video.getTimestamp());
+			validateDateMoreThen60Seconds(date);
+			statisticsRepository.save(video);
+		} catch (Exception e) {
+			log.error("insertVideo", e);
+			throw e;
+		}
 	}
 
 	private void validateDateMoreThen60Seconds(LocalDateTime date) {
@@ -46,23 +50,35 @@ public class VideosServiceImpl implements VideosService {
 
 	@Override
 	public void deleteAllVideos() {
-		log.debug("deleteAllVideos");
-		statisticsRepository.deleteAll();
+		try {
+			statisticsRepository.deleteAll();
+		} catch (Exception e) {
+			log.error("deleteAllVideos", e);
+			throw e;
+		}
 	}
 
 	@Override
 	public StatisticsResponse statistics() {
-		log.debug("statistics");
+		try {
+			LocalDateTime deadline = DateUtils.now().minusSeconds(STATISTICS_PERIOD_SECONDS);
+			Long timestamp = DateUtils.localDateTimeToTimestampMillisecondsUTC(deadline);
+			SortedMap<Long, Statistic> statistics = statisticsRepository.listStatisticsAfter(timestamp);
 
-		LocalDateTime deadline = DateUtils.now().minusSeconds(STATISTICS_PERIOD_SECONDS);
-		Long timestamp = DateUtils.localDateTimeToTimestampMillisecondsUTC(deadline);
-		SortedMap<Long, Statistic> statistics = statisticsRepository.listStatisticsAfter(timestamp);
+			return aggregateStatistics(statistics);
+		} catch (Exception e) {
+			log.error("statistics", e);
+			throw e;
+		}
+	}
 
+	private StatisticsResponse aggregateStatistics(SortedMap<Long, Statistic> statistics) {
 		Statistic finalStatistic = statistics.values().parallelStream().reduce(new Statistic(),
 				(total, statistic) -> aggregateStatistic(total, statistic));
 
 		BigDecimal bigDecimalCount = BigDecimal.valueOf(finalStatistic.getCount());
 		BigDecimal avg = finalStatistic.getSum().divide(bigDecimalCount, MathContext.DECIMAL128);
+
 		// @formatter:off
 		return StatisticsResponse.builder()
 				.sum(finalStatistic.getSum())
