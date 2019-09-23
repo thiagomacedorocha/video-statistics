@@ -4,27 +4,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import io.tmr.videostatistics.dto.InsertVideoRequest;
+import io.tmr.videostatistics.api.Transformator;
 import io.tmr.videostatistics.dto.StatisticsResponse;
+import io.tmr.videostatistics.model.Video;
 import io.tmr.videostatistics.repository.StatisticsRepositoryImpl;
 import io.tmr.videostatistics.utils.DateUtils;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {
+	VideosServiceImpl.class, StatisticsRepositoryImpl.class
+})
 public class VideosServiceStatisticsTest {
 
 	private static final Random random = new Random();
 
+	@Autowired
 	private VideosService videosService;
-
-	public VideosServiceStatisticsTest() {
-		this.videosService = new VideosServiceImpl(new StatisticsRepositoryImpl());
-	}
 
 	/**
 	 * This test is important to validate the double precision error. That's why BigDecimal replaces the double type for
@@ -55,12 +62,12 @@ public class VideosServiceStatisticsTest {
 		LocalDateTime testDate = DateUtils.now();
 
 		long timestamp1 = DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate.minusSeconds(20));
-		InsertVideoRequest video1 = new InsertVideoRequest(BigDecimal.valueOf(7.7), timestamp1);
-		InsertVideoRequest video2 = new InsertVideoRequest(BigDecimal.valueOf(7.06), timestamp1);
+		Video video1 = Video.builder().timestamp(timestamp1).duration(BigDecimal.valueOf(7.7)).build();
+		Video video2 = Video.builder().timestamp(timestamp1).duration(BigDecimal.valueOf(7.06)).build();
 
 		long timestamp2 = DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate.minusSeconds(40));
-		InsertVideoRequest video3 = new InsertVideoRequest(BigDecimal.valueOf(8.11), timestamp2);
-		InsertVideoRequest video4 = new InsertVideoRequest(BigDecimal.valueOf(2.62), timestamp2);
+		Video video3 = Video.builder().timestamp(timestamp2).duration(BigDecimal.valueOf(8.11)).build();
+		Video video4 = Video.builder().timestamp(timestamp2).duration(BigDecimal.valueOf(2.62)).build();
 
 		videosService.insertVideo(video1);
 		videosService.insertVideo(video2);
@@ -71,7 +78,6 @@ public class VideosServiceStatisticsTest {
 	@Test
 	public void test_statistics_manyRandomVideos() {
 		StatisticsResponse generatedStatistics = loadManyRandomVideos_erro();
-		System.out.println(generatedStatistics);
 
 		StatisticsResponse statistics = videosService.statistics();
 
@@ -94,7 +100,7 @@ public class VideosServiceStatisticsTest {
 		BigDecimal max = null;
 		BigDecimal min = null;
 
-		List<InsertVideoRequest> videoList = new ArrayList<>();
+		List<Video> videoList = new ArrayList<>();
 		for (long i = 1; i <= count; i++) {
 			int diff = random.nextInt(50);
 			long timestamp = DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate.minusSeconds(diff));
@@ -107,8 +113,7 @@ public class VideosServiceStatisticsTest {
 			if (min == null || duration1.compareTo(min) < 0) {
 				min = duration1;
 			}
-			InsertVideoRequest video1 = new InsertVideoRequest(duration1, timestamp);
-			videoList.add(video1);
+			videoList.add(Video.builder().timestamp(timestamp).duration(duration1).build());
 
 			BigDecimal duration2 = generateDuration();
 			sum = sum.add(duration2);
@@ -118,8 +123,7 @@ public class VideosServiceStatisticsTest {
 			if (min == null || duration2.compareTo(min) < 0) {
 				min = duration2;
 			}
-			InsertVideoRequest video2 = new InsertVideoRequest(duration2, timestamp);
-			videoList.add(video2);
+			videoList.add(Video.builder().timestamp(timestamp).duration(duration2).build());
 		}
 		videoList.parallelStream().forEach(videosService::insertVideo);
 
@@ -132,10 +136,8 @@ public class VideosServiceStatisticsTest {
 	private static BigDecimal generateDuration() {
 		int intergerPart = random.nextInt(Integer.MAX_VALUE);
 		double decimalValue = random.nextDouble();
-		int decimalLimit = 10000;
-		decimalValue = Math.floor(decimalValue * decimalLimit) / decimalLimit;
 		decimalValue += intergerPart;
-		return BigDecimal.valueOf(decimalValue);
+		return BigDecimal.valueOf(decimalValue).setScale(Transformator.DURATION_SCALE, RoundingMode.DOWN);
 	}
 
 }

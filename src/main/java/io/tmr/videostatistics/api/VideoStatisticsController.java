@@ -36,7 +36,7 @@ public class VideoStatisticsController {
 	@PostMapping(value = VIDEOS)
 	@ResponseStatus(HttpStatus.CREATED)
 	public void insertVideo(@Valid @RequestBody InsertVideoRequest insertVideo) {
-		videosService.insertVideo(insertVideo);
+		videosService.insertVideo(Transformator.transform(insertVideo));
 	}
 
 	@DeleteMapping(value = VIDEOS)

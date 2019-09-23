@@ -8,9 +8,9 @@ import java.util.SortedMap;
 import org.springframework.stereotype.Service;
 
 import io.tmr.videostatistics.InvalidInputData;
-import io.tmr.videostatistics.dto.InsertVideoRequest;
 import io.tmr.videostatistics.dto.StatisticsResponse;
 import io.tmr.videostatistics.model.Statistic;
+import io.tmr.videostatistics.model.Video;
 import io.tmr.videostatistics.repository.StatisticsRepository;
 import io.tmr.videostatistics.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +29,11 @@ public class VideosServiceImpl implements VideosService {
 	}
 
 	@Override
-	public void insertVideo(InsertVideoRequest insertVideo) {
+	public void insertVideo(Video video) {
 		// log.debug("insertVideo: " + insertVideo);
-		LocalDateTime date = DateUtils.timestampToLocalDateTimeUTC(insertVideo.getTimestamp());
+		LocalDateTime date = DateUtils.timestampToLocalDateTimeUTC(video.getTimestamp());
 		validateDateMoreThen60Seconds(date);
-		statisticsRepository.save(insertVideo);
+		statisticsRepository.save(video);
 	}
 
 	private void validateDateMoreThen60Seconds(LocalDateTime date) {

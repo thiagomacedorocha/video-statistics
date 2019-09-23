@@ -6,8 +6,8 @@ import java.util.TreeMap;
 
 import org.springframework.stereotype.Repository;
 
-import io.tmr.videostatistics.dto.InsertVideoRequest;
 import io.tmr.videostatistics.model.Statistic;
+import io.tmr.videostatistics.model.Video;
 
 @Repository
 public class StatisticsRepositoryImpl implements StatisticsRepository {
@@ -19,13 +19,13 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
 	}
 
 	@Override
-	public synchronized void save(InsertVideoRequest insertVideo) {
-		Statistic statistic = statistics.get(insertVideo.getTimestamp());
+	public synchronized void save(Video video) {
+		Statistic statistic = statistics.get(video.getTimestamp());
 		if (statistic != null) {
-			statistic.addNewVideoDuration(insertVideo.getDuration());
+			statistic.addNewVideoDuration(video.getDuration());
 		} else {
-			Statistic newStatistic = new Statistic(insertVideo.getDuration());
-			statistics.put(insertVideo.getTimestamp(), newStatistic);
+			Statistic newStatistic = new Statistic(video.getDuration());
+			statistics.put(video.getTimestamp(), newStatistic);
 		}
 	}
 
