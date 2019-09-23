@@ -1,4 +1,10 @@
-[overview]
+== Overview
+
+Swagger client test: +
+http://localhost:8080/swagger-ui/index.html +
+OpenAPI definition: +
+http://localhost:8080/v3/api-docs
+
 == HTTP status codes
 
 The following HTTP status codes are used.
