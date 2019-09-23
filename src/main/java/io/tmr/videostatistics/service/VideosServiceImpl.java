@@ -32,10 +32,17 @@ public class VideosServiceImpl implements VideosService {
 	public void insertVideo(Video video) {
 		try {
 			validateDate(video.getTimestamp());
+			validateDuration(video.getDuration());
 			statisticsRepository.save(video);
 		} catch (Exception e) {
 			log.error("insertVideo", e);
 			throw e;
+		}
+	}
+
+	private void validateDuration(BigDecimal duration) {
+		if (duration.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new InvalidInputData("Duration nmust be greater than zero.");
 		}
 	}
 

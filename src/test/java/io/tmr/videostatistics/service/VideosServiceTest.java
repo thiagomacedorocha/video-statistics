@@ -35,7 +35,6 @@ public class VideosServiceTest {
 										.duration(BigDecimal.valueOf(200.3))
 										.build());
 		// @formatter:on
-
 	}
 
 	@Test
@@ -61,7 +60,6 @@ public class VideosServiceTest {
 										.duration(BigDecimal.valueOf(200.3))
 										.build());
 		// @formatter:on
-
 	}
 
 	@Test
@@ -72,6 +70,44 @@ public class VideosServiceTest {
 		assertThatThrownBy(() -> videosService.insertVideo(Video.builder()
 										.timestamp(DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate))
 										.duration(BigDecimal.valueOf(200.3))
+										.build()))
+							.isInstanceOf(InvalidInputData.class);
+		// @formatter:on
+	}
+
+	@Test
+	public void test_insertVideo_duration_MinimusValue() {
+		LocalDateTime testDate = DateUtils.now();
+
+		// @formatter:off
+		videosService.insertVideo(Video.builder()
+										.timestamp(DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate))
+										.duration(BigDecimal.valueOf(0.0001))
+										.build());
+		// @formatter:on
+	}
+
+	@Test
+	public void test_insertVideo_duration_Negative() {
+		LocalDateTime testDate = DateUtils.now();
+
+		// @formatter:off
+		assertThatThrownBy(() -> videosService.insertVideo(Video.builder()
+										.timestamp(DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate))
+										.duration(BigDecimal.valueOf(0.0))
+										.build()))
+							.isInstanceOf(InvalidInputData.class);
+		// @formatter:on
+	}
+
+	@Test
+	public void test_insertVideo_duration_Zero() {
+		LocalDateTime testDate = DateUtils.now();
+
+		// @formatter:off
+		assertThatThrownBy(() -> videosService.insertVideo(Video.builder()
+										.timestamp(DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate))
+										.duration(BigDecimal.valueOf(-0.3))
 										.build()))
 							.isInstanceOf(InvalidInputData.class);
 		// @formatter:on
