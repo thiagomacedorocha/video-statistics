@@ -1,6 +1,5 @@
 package io.tmr.videostatistics.repository;
 
-import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -12,10 +11,10 @@ import io.tmr.videostatistics.model.Video;
 @Repository
 public class StatisticsRepositoryImpl implements StatisticsRepository {
 
-	private SortedMap<Long, Statistic> statistics;
+	private TreeMap<Long, Statistic> statistics;
 
 	public StatisticsRepositoryImpl() {
-		this.statistics = Collections.synchronizedSortedMap(new TreeMap<Long, Statistic>());
+		this.statistics = new TreeMap<Long, Statistic>();
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
 
 	@Override
 	public void deleteAll() {
-		statistics = Collections.synchronizedSortedMap(new TreeMap<Long, Statistic>());
+		statistics = new TreeMap<Long, Statistic>();
 	}
 
 	@Override
