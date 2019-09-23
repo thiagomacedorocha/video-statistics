@@ -51,4 +51,30 @@ public class VideosServiceTest {
 		// @formatter:on
 	}
 
+	@Test
+	public void test_insertVideo_timestamp_Now() {
+		LocalDateTime testDate = DateUtils.now();
+
+		// @formatter:off
+		videosService.insertVideo(Video.builder()
+										.timestamp(DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate))
+										.duration(BigDecimal.valueOf(200.3))
+										.build());
+		// @formatter:on
+
+	}
+
+	@Test
+	public void test_insertVideo_timestamp_inTheFuture() {
+		LocalDateTime testDate = DateUtils.now().plusSeconds(1);
+
+		// @formatter:off
+		assertThatThrownBy(() -> videosService.insertVideo(Video.builder()
+										.timestamp(DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate))
+										.duration(BigDecimal.valueOf(200.3))
+										.build()))
+							.isInstanceOf(InvalidInputData.class);
+		// @formatter:on
+	}
+
 }

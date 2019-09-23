@@ -31,12 +31,25 @@ public class VideosServiceImpl implements VideosService {
 	@Override
 	public void insertVideo(Video video) {
 		try {
-			LocalDateTime date = DateUtils.timestampToLocalDateTimeUTC(video.getTimestamp());
-			validateDateMoreThen60Seconds(date);
+			validateDate(video.getTimestamp());
 			statisticsRepository.save(video);
 		} catch (Exception e) {
 			log.error("insertVideo", e);
 			throw e;
+		}
+	}
+
+	private void validateDate(Long timestamp) {
+		LocalDateTime date = DateUtils.timestampToLocalDateTimeUTC(timestamp);
+		validateDateMoreThen60Seconds(date);
+		validateDateInTheFuture(date);
+	}
+
+	private void validateDateInTheFuture(LocalDateTime date) {
+		LocalDateTime now = DateUtils.now();
+
+		if (date.isAfter(now)) {
+			throw new InvalidInputData("Invalid date in the future.");
 		}
 	}
 
