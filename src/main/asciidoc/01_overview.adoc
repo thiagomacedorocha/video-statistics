@@ -1,0 +1,32 @@
+[overview]
+== HTTP status codes
+
+The following HTTP status codes are used.
+
+|===
+| Status Code | description | Explanations
+
+| `200`
+| Request OK
+| Success
+
+| `201`
+| Created
+| Success inserted
+
+| `204`
+| No content
+| When post method was called, invalid input data, if or timestamp older than 60 seconds or a future date. When delete method was called, all videos deleted success.
+
+| `5xx`
+| Internal Server Error
+| Unknown Error
+|===
+
+== Error message structure
+
+*Http Response*
+include::{snippets}/error-massage/http-response.adoc[]
+
+*Response Fields*
+include::{snippets}/error-massage/response-fields.adoc[]

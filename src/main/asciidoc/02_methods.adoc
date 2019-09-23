@@ -1,0 +1,41 @@
+== POST /videos
+
+Insert video data.
+
+*Http Request*
+include::{snippets}/insert-video/http-request.adoc[]
+
+*Http Response*
+include::{snippets}/insert-video/http-response.adoc[]
+
+*curl Request*
+include::{snippets}/insert-video/curl-request.adoc[]
+
+== DELETE /videos
+
+Delete all video statistics data.
+
+*Http Request*
+include::{snippets}/delete-allVideos/http-request.adoc[]
+
+*Http Response*
+include::{snippets}/delete-allVideos/http-response.adoc[]
+
+*curl Request*
+include::{snippets}/delete-allVideos/curl-request.adoc[]
+
+== GET /statistics
+
+This method retrieves Nextbike stations as Ort Entity.
+
+*Http Request*
+include::{snippets}/statistics/http-request.adoc[]
+
+*Http Response*
+include::{snippets}/statistics/http-response.adoc[]
+
+*Response Fields*
+include::{snippets}/statistics/response-fields.adoc[]
+
+*curl Request*
+include::{snippets}/statistics/curl-request.adoc[]
