@@ -3,6 +3,7 @@ package io.tmr.videostatistics.service;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.SortedMap;
 
 import org.springframework.stereotype.Service;
@@ -92,7 +93,7 @@ public class VideosServiceImpl implements VideosService {
 		}
 	}
 
-	private StatisticsResponse aggregateStatistics(SortedMap<Long, Statistic> statistics) {
+	private StatisticsResponse aggregateStatistics(Map<Long, Statistic> statistics) {
 		Statistic finalStatistic = statistics.values().parallelStream().reduce(new Statistic(),
 				(total, statistic) -> aggregateStatistic(total, statistic));
 
