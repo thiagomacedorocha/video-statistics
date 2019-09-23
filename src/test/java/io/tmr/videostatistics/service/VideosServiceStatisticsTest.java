@@ -85,48 +85,11 @@ public class VideosServiceStatisticsTest {
 		videosService.deleteAllVideos();
 	}
 
-	// private StatisticsResponse loadVideos_procurando_erro() {
-	// LocalDateTime testDate = DateUtils.now();
-	// List<BigDecimal> durations =
-	// List.of(BigDecimal.valueOf(2064252371.4119806), BigDecimal.valueOf(1284389816.2697136),
-	// BigDecimal.valueOf(711294082.7796273), BigDecimal.valueOf(1226533444.230466),
-	// BigDecimal.valueOf(1653374729.7533033), BigDecimal.valueOf(26128290.782333903),
-	// BigDecimal.valueOf(996613856.1795837), BigDecimal.valueOf(1343992411.8747733),
-	// BigDecimal.valueOf(402127314.0219771), BigDecimal.valueOf(282380417.9582148));
-	// // List<Double> durations = List.of(14.76, 10.73);
-	//
-	// long count = durations.size();
-	// BigDecimal sum = BigDecimal.valueOf(0.0);
-	// BigDecimal max = null;
-	// BigDecimal min = null;
-	//
-	// List<InsertVideoRequest> videoList = new ArrayList<>();
-	// for (BigDecimal duration : durations) {
-	// sum = sum.add(duration);
-	// if (max == null || duration.compareTo(max) > 0) {
-	// max = duration;
-	// }
-	// if (min == null || duration.compareTo(min) < 0) {
-	// min = duration;
-	// }
-	//
-	// testDate = testDate.minusSeconds(3);
-	// long timestamp = DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate);
-	// InsertVideoRequest video = new InsertVideoRequest(duration, timestamp);
-	// videoList.add(video);
-	// }
-	// videoList.parallelStream().forEach(videosService::insertVideo);
-	//
-	// BigDecimal avg = sum.divide(BigDecimal.valueOf(count), MathContext.DECIMAL128);
-	//
-	// return StatisticsResponse.builder().sum(sum).avg(avg).max(max).min(min).count(count).build();
-	// }
-
 	private StatisticsResponse loadManyRandomVideos_erro() {
 
 		LocalDateTime testDate = DateUtils.now();
 
-		long count = 5; // 100000;
+		long count = 1000000;
 		BigDecimal sum = BigDecimal.valueOf(0.0);
 		BigDecimal max = null;
 		BigDecimal min = null;
@@ -137,7 +100,6 @@ public class VideosServiceStatisticsTest {
 			long timestamp = DateUtils.localDateTimeToTimestampMillisecondsUTC(testDate.minusSeconds(diff));
 
 			BigDecimal duration1 = generateDuration();
-			System.out.println(duration1);
 			sum = sum.add(duration1);
 			if (max == null || duration1.compareTo(max) > 0) {
 				max = duration1;
@@ -150,7 +112,6 @@ public class VideosServiceStatisticsTest {
 
 			BigDecimal duration2 = generateDuration();
 			sum = sum.add(duration2);
-			System.out.println(duration2);
 			if (max == null || duration2.compareTo(max) > 0) {
 				max = duration2;
 			}
@@ -169,11 +130,12 @@ public class VideosServiceStatisticsTest {
 	}
 
 	private static BigDecimal generateDuration() {
-		int sizeDuration = 100;
-		int intergerPart = random.nextInt((int) Math.pow(10, sizeDuration));
-		double valor = random.nextDouble();
-		valor += intergerPart;
-		return BigDecimal.valueOf(valor);
+		int intergerPart = random.nextInt(Integer.MAX_VALUE);
+		double decimalValue = random.nextDouble();
+		int decimalLimit = 10000;
+		decimalValue = Math.floor(decimalValue * decimalLimit) / decimalLimit;
+		decimalValue += intergerPart;
+		return BigDecimal.valueOf(decimalValue);
 	}
 
 }

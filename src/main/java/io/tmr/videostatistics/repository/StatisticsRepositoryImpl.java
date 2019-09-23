@@ -18,7 +18,8 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
 		this.statistics = Collections.synchronizedSortedMap(new TreeMap<Long, Statistic>());
 	}
 
-	public void save(InsertVideoRequest insertVideo) {
+	@Override
+	public synchronized void save(InsertVideoRequest insertVideo) {
 		Statistic statistic = statistics.get(insertVideo.getTimestamp());
 		if (statistic != null) {
 			statistic.addNewVideoDuration(insertVideo.getDuration());
@@ -28,10 +29,12 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
 		}
 	}
 
+	@Override
 	public void deleteAll() {
 		statistics = Collections.synchronizedSortedMap(new TreeMap<Long, Statistic>());
 	}
 
+	@Override
 	public SortedMap<Long, Statistic> listStatisticsAfter(Long timestamp) {
 		return statistics.tailMap(timestamp);
 	}
