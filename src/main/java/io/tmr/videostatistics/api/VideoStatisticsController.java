@@ -3,6 +3,7 @@ package io.tmr.videostatistics.api;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,10 @@ import io.tmr.videostatistics.dto.InsertVideoRequest;
 import io.tmr.videostatistics.dto.StatisticsResponse;
 import io.tmr.videostatistics.service.VideosService;
 import io.tmr.videostatistics.utils.DateUtils;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController()
+@Slf4j
 public class VideoStatisticsController {
 
 	private static final String VIDEOS = "videos";
@@ -50,7 +53,9 @@ public class VideoStatisticsController {
 		return videosService.statistics();
 	}
 
-	@ExceptionHandler(InvalidInputData.class)
+	@ExceptionHandler({
+		InvalidInputData.class, MethodArgumentNotValidException.class
+	})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ErrorMessageDTO invalidInputData(Exception ex, WebRequest req) {
 		// @formatter:off
@@ -64,6 +69,7 @@ public class VideoStatisticsController {
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ErrorMessageDTO unknownException(Exception ex, WebRequest req) {
+		log.error("Unknown Error when request: " + req.getDescription(false), ex);
 		String debugMsg = ex.getCause() != null ? ex.getCause().getCause().getMessage() : null;
 		// @formatter:off
 		return ErrorMessageDTO.builder()

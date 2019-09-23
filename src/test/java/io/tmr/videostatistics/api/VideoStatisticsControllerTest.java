@@ -49,6 +49,19 @@ public class VideoStatisticsControllerTest {
 	}
 
 	@Test
+	public void test_insertVideo_Error_MissingInputData() throws Exception {
+		doThrow(new InvalidInputData("Invalid input data")).when(videosService).insertVideo(any());
+
+		String body = "{ }";
+
+		// @formatter:off
+		mockMvc.perform(post("/videos").content(body).contentType(MediaType.APPLICATION_JSON))
+		    .andDo(print())
+	  		.andExpect(status().isNoContent());
+		// @formatter:on
+	}
+
+	@Test
 	public void test_insertVideo_Error() throws Exception {
 		doThrow(new InvalidInputData("Invalid input data")).when(videosService).insertVideo(any());
 
@@ -68,6 +81,17 @@ public class VideoStatisticsControllerTest {
 		mockMvc.perform(delete("/videos"))
 		    .andDo(print())
 	  		.andExpect(status().isNoContent());
+		// @formatter:on
+	}
+
+	@Test
+	public void test_statistics_unknowError() throws Exception {
+		when(videosService.statistics()).thenThrow(new RuntimeException("unknow error"));
+
+		// @formatter:off
+		mockMvc.perform(get("/statistics"))
+			.andDo(print())
+	  		.andExpect(status().isInternalServerError());
 		// @formatter:on
 	}
 
