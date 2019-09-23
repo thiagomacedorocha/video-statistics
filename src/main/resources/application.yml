@@ -1,1 +1,12 @@
-
+management:
+  server:
+    servlet:
+      context-path: /admin
+  endpoints:
+    web:
+      base-path: /admin
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
