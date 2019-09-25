@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import io.tmr.videostatistics.InvalidInputData;
+import io.tmr.videostatistics.exception.InvalidInputData;
 import io.tmr.videostatistics.model.Video;
 import io.tmr.videostatistics.repository.StatisticsRepositoryImpl;
 import io.tmr.videostatistics.utils.DateUtils;

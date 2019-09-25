@@ -9,19 +9,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
-import io.tmr.videostatistics.InvalidInputData;
 import io.tmr.videostatistics.dto.ErrorMessageDTO;
 import io.tmr.videostatistics.dto.InsertVideoRequest;
 import io.tmr.videostatistics.dto.StatisticsResponse;
+import io.tmr.videostatistics.exception.InvalidInputData;
 import io.tmr.videostatistics.service.VideosService;
 import io.tmr.videostatistics.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController()
+@RequestMapping({
+	"tmr"
+})
 @Slf4j
 public class VideoStatisticsController {
 

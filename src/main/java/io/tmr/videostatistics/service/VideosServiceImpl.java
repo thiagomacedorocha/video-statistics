@@ -8,8 +8,8 @@ import java.util.SortedMap;
 
 import org.springframework.stereotype.Service;
 
-import io.tmr.videostatistics.InvalidInputData;
 import io.tmr.videostatistics.dto.StatisticsResponse;
+import io.tmr.videostatistics.exception.InvalidInputData;
 import io.tmr.videostatistics.model.Statistic;
 import io.tmr.videostatistics.model.Video;
 import io.tmr.videostatistics.repository.StatisticsRepository;
