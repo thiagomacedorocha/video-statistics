@@ -19,7 +19,7 @@
 		<java.version>11</java.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 		<logback.gelf.appender.version>1.5</logback.gelf.appender.version>
-		<springdoc-openapi-ui>1.1.42</springdoc-openapi-ui>
+		<springdoc-openapi-ui>1.1.22</springdoc-openapi-ui>
 		<asciidoctorj.version>1.5.6</asciidoctorj.version>
 		<asciidoctorj.diagram.version>1.5.4.1</asciidoctorj.diagram.version>
 		<jruby.version>1.7.21</jruby.version>
