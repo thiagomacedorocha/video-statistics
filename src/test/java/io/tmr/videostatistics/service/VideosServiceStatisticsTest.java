@@ -40,6 +40,7 @@ public class VideosServiceStatisticsTest {
 	 */
 	@Test
 	public void test_statistics_detect_precision_error() {
+		videosService.deleteAllVideos();
 		loadVideos();
 		StatisticsResponse statistics = videosService.statistics();
 
@@ -77,6 +78,7 @@ public class VideosServiceStatisticsTest {
 
 	@Test
 	public void test_statistics_manyRandomVideos() {
+		videosService.deleteAllVideos();
 		StatisticsResponse generatedStatistics = loadManyRandomVideos();
 
 		StatisticsResponse statistics = videosService.statistics();
