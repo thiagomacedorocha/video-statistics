@@ -1,4 +1,4 @@
-package io.tmr.videostatistics;
+package io.tmr.videostatistics.exception;
 
 public class InvalidInputData extends RuntimeException {
 
