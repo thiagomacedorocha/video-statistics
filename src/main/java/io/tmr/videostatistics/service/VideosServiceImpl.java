@@ -98,7 +98,10 @@ public class VideosServiceImpl implements VideosService {
 				(total, statistic) -> aggregateStatistic(total, statistic));
 
 		BigDecimal bigDecimalCount = BigDecimal.valueOf(finalStatistic.getCount());
-		BigDecimal avg = finalStatistic.getSum().divide(bigDecimalCount, MathContext.DECIMAL128);
+		BigDecimal avg = null;
+		if (!bigDecimalCount.equals(BigDecimal.ZERO)) {
+			avg = finalStatistic.getSum().divide(bigDecimalCount, MathContext.DECIMAL128);
+		}
 
 		// @formatter:off
 		return StatisticsResponse.builder()
