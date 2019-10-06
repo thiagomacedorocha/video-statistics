@@ -185,7 +185,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>${docker.image.prefix}/video-statistics</repository>
+					<repository>thiagomr/video-statistics</repository>
 					<tag>${project.version}</tag>
 					<buildArgs>
 						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
