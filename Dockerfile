@@ -1,5 +1,6 @@
-FROM adoptopenjdk/openjdk11:ppc64le-ubi-minimal-jre11u-nightly
+FROM adoptopenjdk/openjdk11:latest
 
-ENTRYPOINT ["/usr/bin/java", "-jar", "/usr/local/javapkg/entrypoint.jar"]
-
-ADD target/entrypoint.jar /usr/local/javapkg/entrypoint.jar
+RUN mkdir /opt/app
+ARG JAR_FILE
+ADD target/${JAR_FILE} /opt/app/entrypoint.jar
+CMD ["java", "-jar", "/opt/app/entrypoint.jar"]

@@ -23,6 +23,11 @@
 		<asciidoctorj.version>1.5.6</asciidoctorj.version>
 		<asciidoctorj.diagram.version>1.5.4.1</asciidoctorj.diagram.version>
 		<jruby.version>1.7.21</jruby.version>
+
+		<docker.maven.plugin.version>1.2.0</docker.maven.plugin.version>
+		<docker.image.prefix>081425600932.dkr.ecr.us-east-2.amazonaws.com/desafio-samba-repo</docker.image.prefix>
+		<docker.image.name>${project.artifactId}</docker.image.name>
+		<docker.image.tag>${project.version}</docker.image.tag>
 	</properties>
 
 	<dependencies>
@@ -47,13 +52,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.restdocs</groupId>
 			<artifactId>spring-restdocs-mockmvc</artifactId>
@@ -95,53 +100,53 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-			<plugin> 
+
+			<plugin>
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
 				<version>1.5.3</version>
 				<executions>
 					<execution>
 						<id>generate-docs</id>
-						<phase>prepare-package</phase> 
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
 							<requires>
-		                        <require>asciidoctor-diagram</require>
-		                    </requires>
+								<require>asciidoctor-diagram</require>
+							</requires>
 							<backend>html</backend>
 							<doctype>book</doctype>
 						</configuration>
 					</execution>
 				</executions>
 				<dependencies>
-					 <dependency> 
+					<dependency>
 						<groupId>org.springframework.restdocs</groupId>
 						<artifactId>spring-restdocs-asciidoctor</artifactId>
 						<version>1.2.1.RELEASE</version>
-					 </dependency>
-					 <dependency>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctorj</artifactId>
-                        <version>${asciidoctorj.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jruby</groupId>
-                        <artifactId>jruby-complete</artifactId>
-                        <version>${jruby.version}</version>
-                    </dependency>
-                    
-                    <dependency>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctorj-diagram</artifactId>
-                        <version>${asciidoctorj.diagram.version}</version>
-                    </dependency>
+					</dependency>
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj</artifactId>
+						<version>${asciidoctorj.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.jruby</groupId>
+						<artifactId>jruby-complete</artifactId>
+						<version>${jruby.version}</version>
+					</dependency>
+
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj-diagram</artifactId>
+						<version>${asciidoctorj.diagram.version}</version>
+					</dependency>
 				</dependencies>
 			</plugin>
 
-			<plugin> 
+			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
@@ -150,7 +155,7 @@
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
-						<configuration> 
+						<configuration>
 							<outputDirectory>
 								${project.build.outputDirectory}/static/docs
 							</outputDirectory>
@@ -165,7 +170,29 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.10</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>${docker.image.prefix}/video-statistics</repository>
+					<tag>${project.version}</tag>
+					<buildArgs>
+						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
